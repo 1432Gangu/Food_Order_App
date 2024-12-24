@@ -108,7 +108,12 @@ const Cart = () => {
             </div>
           </div>
 
-          
+
+          <PaymentMethodModal
+            isPaymentModalOpen={isPaymentModalOpen}
+            setIsPaymentModalOpen={setIsPaymentModalOpen}
+            handlePayment={handlePayment}
+          />
           <OrderConfirmationModal
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
@@ -116,12 +121,6 @@ const Cart = () => {
             address={address}
           />
 
-          
-          <PaymentMethodModal
-            isPaymentModalOpen={isPaymentModalOpen}
-            setIsPaymentModalOpen={setIsPaymentModalOpen}
-            handlePayment={handlePayment}
-          />
         </div>
       ) : (
         <div className="flex justify-center">

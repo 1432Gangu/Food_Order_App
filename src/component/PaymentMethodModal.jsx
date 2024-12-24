@@ -1,10 +1,14 @@
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const PaymentMethodModal = ({ isPaymentModalOpen, setIsPaymentModalOpen, handlePayment }) => {
+  const navigate = useNavigate();
+
   const closeModal = () => {
     setIsPaymentModalOpen(false);
+    navigate('/cart'); // Navigate to the Cart page
   };
 
   const notify = (method) => {
@@ -18,7 +22,7 @@ const PaymentMethodModal = ({ isPaymentModalOpen, setIsPaymentModalOpen, handleP
       progress: undefined,
     });
     handlePayment(method); // Call the original handlePayment function
-    closeModal();
+    setIsPaymentModalOpen(false); // Close modal after selecting payment method
   };
 
   return (

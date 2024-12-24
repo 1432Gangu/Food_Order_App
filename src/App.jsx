@@ -40,6 +40,8 @@ import AdminLogin from "./component/Admnin/AdminLogin";
 import ItemEdit from "./component/Admnin/ItemEdit";
 import Login from "./component/Admnin/Login";
 import RestaurantDetail from "../src/Restaurants/RestaurantDetail "
+import AdminDashboard from "./component/Admnin/AdminDashboard";
+import ProductDetails from "./component/ProductDetails ";
 
 
 function App() {
@@ -48,7 +50,7 @@ function App() {
     const location = useLocation();
 
     // Define routes where Navbar and Footer should not appear
-    const hideNavbarFooterRoutes = ["/Admin", "/AdminLogin","/ItemEdit", "/"];
+    const hideNavbarFooterRoutes = ["/product","/AdminDashboard","/Admin", "/AdminLogin","/ItemEdit", "/"];
     const hideNavbarFooter = hideNavbarFooterRoutes.includes(location.pathname);
 
     return (
@@ -72,6 +74,8 @@ function App() {
           <Route path="/shop" element={<Shop />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/ItemEdit" element={<ItemEdit />} />
+          <Route path="/AdminDashboard" element={<AdminDashboard />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
         </Routes>
       </Layout>
     </BrowserRouter>

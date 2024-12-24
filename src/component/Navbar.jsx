@@ -71,9 +71,9 @@ function Navbar() {
         <Link to="/shop" className="hover:text-red-500 transition duration-300">
           Items
         </Link>
-        <Link to="/Contact" className="hover:text-red-500 transition duration-300">
+        {/* <Link to="/Contact" className="hover:text-red-500 transition duration-300">
           Contact
-        </Link>
+        </Link> */}
         {/* <Link to="/ItemEdit" className="hover:text-red-500 transition duration-300">
           Item Edit
         </Link> */}

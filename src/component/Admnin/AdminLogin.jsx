@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import Home2 from '../../assets/Images/Home2.webp'; // Ensure the path is correct
+import Home2 from "../../assets/Images/Home2.webp"; // Ensure the path is correct
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +12,6 @@ const AdminLogin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Pre-fill data if passed via navigation state
     if (location.state) {
       setFormData({
         name: location.state.name || "",
@@ -28,7 +27,6 @@ const AdminLogin = () => {
       [name]: value,
     }));
 
-    // Clear errors for the current field
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: "",
@@ -38,12 +36,18 @@ const AdminLogin = () => {
   const validate = () => {
     const newErrors = {};
 
+    // Email validation
     if (!formData.name.trim()) {
-      newErrors.name = "Username is required";
+      newErrors.name = "Email is required.";
+    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.name)) {
+      newErrors.name = "Invalid email format.";
     }
 
+    // Password validation
     if (!formData.password.trim()) {
-      newErrors.password = "Password is required";
+      newErrors.password = "Password is required.";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters.";
     }
 
     setErrors(newErrors);
@@ -54,9 +58,9 @@ const AdminLogin = () => {
     e.preventDefault();
     if (validate()) {
       if (formData.name === "admin@gmail.com" && formData.password === "123456") {
-        navigate("/ItemEdit"); // Navigate to admin dashboard
+        navigate("/AdminDashboard");
       } else {
-        setErrors({ form: "Invalid username or password" });
+        setErrors({ form: "Invalid username or password." });
       }
     }
   };
@@ -118,7 +122,6 @@ const AdminLogin = () => {
           </button>
         </form>
 
-        {/* Link for navigating to Home page */}
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
             Not an admin?{" "}
