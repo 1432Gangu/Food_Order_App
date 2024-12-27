@@ -2,7 +2,9 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const productRoutes = require('./routes/productRoutes');
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require("./routes/userRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+
 
 dotenv.config();
 const app = express();
@@ -13,7 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/v1/users', userRoutes); 
+app.use("/api/users", userRoutes);
+app.use("/api/admin", adminRoutes);
 app.use('/api/v1/products', productRoutes); 
 
 // Fallback route for 404
