@@ -5,7 +5,7 @@ import Home2 from "../../assets/Images/Home2.webp";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    name: "", // Username field
+    email: "", // Email field
     password: "",
   });
 
@@ -29,11 +29,11 @@ const Login = () => {
   const validate = () => {
     const newErrors = {};
 
-    // Username validation
-    if (!formData.name.trim()) {
-      newErrors.name = "Username is required.";
-    } else if (formData.name.length < 3) {
-      newErrors.name = "Username must be at least 3 characters.";
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Enter a valid email address.";
     }
 
     // Password validation
@@ -53,7 +53,7 @@ const Login = () => {
     if (validate()) {
       try {
         const response = await axios.post("http://localhost:5000/api/users/login", {
-          name: formData.name,
+          email: formData.email,
           password: formData.password,
         });
 
@@ -79,22 +79,22 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
-              htmlFor="name"
+              htmlFor="email"
               className="block text-sm font-medium text-gray-700"
             >
-              Username
+              Email
             </label>
             <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.name ? "border-red-500" : "border-gray-300"
+                errors.email ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500`}
             />
-            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
           <div>
             <label

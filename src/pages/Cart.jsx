@@ -1,30 +1,32 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import emptyCartImage from '../assets/Images/emtycart1.gif';
 import { FaTrashAlt } from 'react-icons/fa';
-// import Modal from '../component/Modal';  // Assuming you have a modal component
-// import OrderConfirmationModal from '../components/OrderConfirmationModal'; // Replace with your modal
+// import { increment, decrement, removeFromCart } from '../redux/cartSlice';
+// import { increment, decrement, removeFromCart } from '../redux/cartSlice';
+
+import { increment, decrement, removeFromCart } from "../redux/cartSlice"
+
 
 import OrderConfirmationModal from '../component/OrderConfirmationModal';
 import PaymentMethodModal from '../component/PaymentMethodModal';
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   const [address, setAddress] = useState('Main Street thilai Nagara, 0012');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(null);
 
   const handleProceedToOrder = () => {
-    setIsModalOpen(true); 
-    setIsPaymentModalOpen(true); 
+    setIsModalOpen(true);
   };
 
   const handlePayment = (method) => {
     setPaymentMethod(method);
-    setIsPaymentModalOpen(false); 
+    setIsPaymentModalOpen(false);
     alert(`You selected ${method} as the payment method.`);
-    
   };
 
   return (
@@ -32,7 +34,7 @@ const Cart = () => {
       {cart.products.length > 0 ? (
         <div>
           <h3 className="text-2xl font-semibold mb-4">SHOPPING CART</h3>
-          <div className="flex flex-col md:flex-row justify-between space-x-10 mt-8">
+          <div className="flex flex-col md:flex-row justify-between space-x-0 md:space-x-10 mt-8">
             {/* PRODUCT LIST section */}
             <div className="md:w-2/3">
               <div className="flex justify-between border-b items-center mb-4 text-xs font-bold">
@@ -64,12 +66,25 @@ const Cart = () => {
                     <div className="flex space-x-12 items-center">
                       <p>${product.price}</p>
                       <div className="flex items-center justify-center border">
-                        <button className="text-xl font-bold px-1.5 border">-</button>
+                        <button
+                          className="text-xl font-bold px-1.5 border"
+                          onClick={() => dispatch(decrement(product.id))}
+                        >
+                          -
+                        </button>
                         <p className="text-xl px-2">{product.quantity}</p>
-                        <button className="text-xl px-1 border">+</button>
+                        <button
+                          className="text-xl px-1 border"
+                          onClick={() => dispatch(increment(product.id))}
+                        >
+                          +
+                        </button>
                       </div>
                       <p>${(product.quantity * product.price).toFixed(2)}</p>
-                      <button className="text-red-500 hover:text-red-700">
+                      <button
+                        className="text-red-500 hover:text-red-700"
+                        onClick={() => dispatch(removeFromCart(product.id))}
+                      >
                         <FaTrashAlt />
                       </button>
                     </div>
@@ -92,23 +107,24 @@ const Cart = () => {
                 <p>Shipping</p>
                 <p className="ml-2">Shipping to:</p>
                 <span className="text-xs font-bold">{address}</span>
-
               </div>
               <div className="flex justify-between mb-4">
                 <span>Total Price</span>
-                <span className="text-green-500 font-semibold">${cart.totalPrice.toFixed(2)}</span>
+                <span className="text-green-500 font-semibold">
+                  ${cart.totalPrice.toFixed(2)}
+                </span>
               </div>
 
               <button
                 className="w-full bg-red-600 text-white py-2 hover:bg-red-800"
-                onClick={handleProceedToOrder} 
+                onClick={handleProceedToOrder}
               >
                 Proceed to Order
               </button>
             </div>
           </div>
 
-
+          {/* Modals */}
           <PaymentMethodModal
             isPaymentModalOpen={isPaymentModalOpen}
             setIsPaymentModalOpen={setIsPaymentModalOpen}
@@ -120,7 +136,6 @@ const Cart = () => {
             cart={cart}
             address={address}
           />
-
         </div>
       ) : (
         <div className="flex justify-center">

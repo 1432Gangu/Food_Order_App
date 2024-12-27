@@ -1,4 +1,7 @@
+const multer = require('multer');
 const { PrismaClient } = require('@prisma/client');
+const upload = multer({ dest: 'uploads/' }); // Define upload middleware
+
 const prisma = new PrismaClient();
 
 
@@ -35,24 +38,37 @@ exports.getProductById = async (req, res) => {
 };
 
 exports.addProduct = async (req, res) => {
-    try {
-        const { name, price, image } = req.body;
+    upload.single('image')(req, res, async (err) => {
+        if (err) {
+            return res.status(500).json({ error: 'File upload failed', details: err.message });
+        }
 
-        const newProduct = await prisma.product.create({
-            data: {
-                name,
-                price,
-                image,
-                
-        },
-        });
+        try {
+            const { name, price } = req.body;
+            const image = req.file ? req.file.path : null; // store file path or handle as needed
 
-    res.status(201).json(newProduct);
-} catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to create product' });
-}
+            // Ensure price is a valid Float
+            const priceFloat = parseFloat(price);
+            if (isNaN(priceFloat)) {
+                return res.status(400).json({ error: 'Invalid price value' });
+            }
+
+            const newProduct = await prisma.product.create({
+                data: {
+                    name,
+                    price: priceFloat,  // Use the float value here
+                    image,
+                },
+            });
+
+            res.status(201).json(newProduct);
+        } catch (error) {
+            console.error('Error creating product:', error); // Log the specific error
+            res.status(500).json({ error: 'Failed to create product', details: error.message });
+        }
+    });
 };
+
 
 exports.updateProduct = async (req, res) => {
     const { id } = req.params;

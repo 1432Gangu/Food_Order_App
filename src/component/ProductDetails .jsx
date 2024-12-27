@@ -3,6 +3,8 @@ import { FaStar } from "react-icons/fa";
 import { useParams, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductDetails = () => {
   const { id } = useParams(); // Get the product ID from the URL
@@ -22,7 +24,7 @@ const ProductDetails = () => {
     };
 
     dispatch(addToCart(productWithAddons));
-    alert("Product added to cart successfully!");
+    toast.success("Product added to cart successfully!"); // Using react-toastify here
   };
 
   const handleAddonChange = (addon) => {
@@ -66,27 +68,27 @@ const ProductDetails = () => {
           <p className="mt-4 text-gray-700">{product.description}</p>
 
           {/* Addons Section */}
-          <div className="mt-6">
-            <h4 className="font-medium">Choose Addons</h4>
-            <div className="flex space-x-4 mt-2">
-              <button
-                className={`py-1 px-4 border rounded ${
-                  addons.includes("Cheese") ? "bg-gray-300" : ""
-                }`}
-                onClick={() => handleAddonChange("Cheese")}
-              >
-                Cheese
-              </button>
-              <button
-                className={`py-1 px-4 border rounded ${
-                  addons.includes("Butter") ? "bg-gray-300" : ""
-                }`}
-                onClick={() => handleAddonChange("Butter")}
-              >
-                Butter
-              </button>
+          <div className="mt-4">
+            <h4 className="font-medium mb-2">Choose Addons</h4>
+            <div className="flex flex-wrap gap-2">
+              {['Cheese', 'Butter', 'Jalapenos', 'Extra Sauce'].map((addon) => (
+                <button
+                  key={addon}
+                  className={`py-1 px-3 rounded-full border-2 transition ${addons.includes(addon)
+                      ? 'bg-green-500 text-white border-green-500'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+                    }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddonChange(addon);
+                  }}
+                >
+                  {addon}
+                </button>
+              ))}
             </div>
           </div>
+
 
           {/* Quantity Selector */}
           <div className="mt-4">
@@ -109,6 +111,7 @@ const ProductDetails = () => {
           </button>
         </div>
       </div>
+
     </div>
   );
 };

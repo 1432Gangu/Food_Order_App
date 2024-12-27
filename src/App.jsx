@@ -30,6 +30,8 @@
 // export default App
 
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "./component/Navbar";
 import Footer from "./component/Footer";
 import Home from "./pages/Home";
@@ -41,8 +43,9 @@ import ItemEdit from "./component/Admnin/ItemEdit";
 import Login from "./component/Admnin/Login";
 import RestaurantDetail from "../src/Restaurants/RestaurantDetail "
 import AdminDashboard from "./component/Admnin/AdminDashboard";
-import ProductDetails from "./component/ProductDetails ";
-
+import ProductDetails from "../src/component/ProductDetails "
+import ProductList from "./Restaurants/ProductList";
+import DeleteProductList from "./Restaurants/DeleteProductList";
 
 function App() {
   // Custom component to manage conditional rendering of Navbar and Footer
@@ -50,7 +53,16 @@ function App() {
     const location = useLocation();
 
     // Define routes where Navbar and Footer should not appear
-    const hideNavbarFooterRoutes = ["/product","/AdminDashboard","/Admin", "/AdminLogin","/ItemEdit", "/"];
+    const hideNavbarFooterRoutes = [
+      "/RestaurantDetail",
+      "/DeleteProductList",
+      "/product",
+      "/AdminDashboard",
+      "/Admin",
+      "/AdminLogin",
+      "/ItemEdit",
+      "/"
+    ];
     const hideNavbarFooter = hideNavbarFooterRoutes.includes(location.pathname);
 
     return (
@@ -67,17 +79,21 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/Admin" element={<Admin />} />
-          <Route path="/restaurant/:id" element={<RestaurantDetail />} /> 
+          <Route path="/RestaurantDetail" element={<RestaurantDetail />} /> 
           <Route path="/AdminLogin" element={<AdminLogin />} />
           <Route path="/" element={<Login />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/ProductList" element={<ProductList />} />
+          <Route path="/DeleteProductList" element={<DeleteProductList />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/ItemEdit" element={<ItemEdit />} />
           <Route path="/AdminDashboard" element={<AdminDashboard />} />
           <Route path="/product/:id" element={<ProductDetails />} />
         </Routes>
       </Layout>
+      {/* Add ToastContainer at the root level */}
+      <ToastContainer />
     </BrowserRouter>
   );
 }

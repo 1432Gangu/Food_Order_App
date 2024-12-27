@@ -4,7 +4,7 @@
 
 // const ItemEdit = () => {
 //   const [formData, setFormData] = useState({
-//     itemName: "",
+//     name: "",
 //     price: "",
 //     image: null,
 //   });
@@ -14,7 +14,7 @@
 
 //   const validate = () => {
 //     let tempErrors = {};
-//     if (!formData.itemName) tempErrors.itemName = "Item name is required.";
+//     if (!formData.name) tempErrors.name = "Item name is required.";
 //     if (!formData.price) tempErrors.price = "Price is required.";
 //     else if (formData.price <= 0) tempErrors.price = "Price must be greater than zero.";
 //     if (!formData.image) tempErrors.image = "Image is required.";
@@ -52,22 +52,22 @@
 //         <form onSubmit={handleSubmit} className="space-y-4">
 //           {/* Item Name Input */}
 //           <div>
-//             <label htmlFor="itemName" className="block text-sm font-medium text-gray-700">
+//             <label htmlFor="name" className="block text-sm font-medium text-gray-700">
 //               Item Name
 //             </label>
 //             <input
 //               type="text"
-//               id="itemName"
-//               name="itemName"
-//               value={formData.itemName}
+//               id="name"
+//               name="name"
+//               value={formData.name}
 //               onChange={handleChange}
 //               className={`mt-1 block w-full px-4 py-2 border ${
-//                 errors.itemName ? "border-red-500" : "border-gray-300"
+//                 errors.name ? "border-red-500" : "border-gray-300"
 //               } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500`}
 //               required
 //             />
-//             {errors.itemName && (
-//               <p className="text-xs text-red-500 mt-1">{errors.itemName}</p>
+//             {errors.name && (
+//               <p className="text-xs text-red-500 mt-1">{errors.name}</p>
 //             )}
 //           </div>
 
@@ -127,67 +127,78 @@
 // };
 
 // export default ItemEdit;
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminLogin from '../../assets/Images/AdminLogin.jpg';
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../../redux/productSlice";
+import AdminLogin from "../../assets/Images/AdminLogin.jpg";
 
 const ItemEdit = () => {
-    const [formData, setFormData] = useState({
-        itemName: "",
-        price: "",
-        image: null,
-    });
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    image: null,
+  });
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    const [errors, setErrors] = useState({});
-    const navigate = useNavigate();
-    const [items, setItems] = useState([]); // State to hold item data
+  const validate = () => {
+    let tempErrors = {};
+    if (!formData.name) tempErrors.name = "Item name is required.";
+    if (!formData.price) tempErrors.price = "Price is required.";
+    else if (formData.price <= 0) tempErrors.price = "Price must be greater than zero.";
+    if (!formData.image) tempErrors.image = "Image is required.";
+    return tempErrors;
+  };
 
-    useEffect(() => {
-        // Load items from localStorage on component mount
-        const storedItems = JSON.parse(localStorage.getItem('shop')) || [];
-        setItems(storedItems);
-    }, []);
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: files ? files[0] : value,
+    }));
+  };
 
-    const validate = () => {
-        let tempErrors = {};
-        if (!formData.itemName) tempErrors.itemName = "Item name is required.";
-        if (!formData.price) tempErrors.price = "Price is required.";
-        else if (formData.price <= 0) tempErrors.price = "Price must be greater than zero.";
-        if (!formData.image) tempErrors.image = "Image is required.";
-        return tempErrors;
-    };
-
-    const handleChange = (e) => {
-        const { name, value, files } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: files ? files[0] : value,
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const validationErrors = validate();
-        if (Object.keys(validationErrors).length === 0) {
-            const newItem = {
-                itemName: formData.itemName,
-                price: parseFloat(formData.price),
-                // Store image as base64 string
-                image: formData.image ? URL.createObjectURL(formData.image) : null,
-            };
-
-            // Update items array and save to localStorage
-            const updatedItems = [...items, newItem];
-            setItems(updatedItems);
-            localStorage.setItem('items', JSON.stringify(updatedItems));
-
-            console.log("Item saved successfully:", newItem);
-            alert("Item saved successfully!");
-            navigate("/Home");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length === 0) {
+      const newItem = new FormData();
+      newItem.append("name", formData.name);
+      newItem.append("price", formData.price);
+      newItem.append("image", formData.image);
+  
+      try {
+        const response = await axios.post("http://localhost:5000/api/v1/products/createProduct", newItem, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+  
+        if (response.status === 200 || response.status === 201) {
+          const savedItem = response.data;
+          dispatch(addProduct(savedItem));
+          alert("Item saved successfully!");
+          navigate("/Home");
         } else {
-            setErrors(validationErrors);
+          console.error("Unexpected response status:", response.status);
+          alert("Unexpected response from the server.");
         }
-    };
+      } catch (error) {
+        if (error.response) {
+          console.error("Error response from server:", error.response.data);
+          alert(`Failed to save item: ${error.response.data.message || "Unknown error"}`);
+        } else {
+          console.error("Error saving item:", error.message);
+          alert("Failed to save item. Please try again.");
+        }
+      }
+    } else {
+      setErrors(validationErrors);
+    }
+  };
+  
 
   return (
     <div
@@ -195,24 +206,23 @@ const ItemEdit = () => {
       style={{ backgroundImage: `url(${AdminLogin})` }}
     >
       <div className="w-full max-w-md bg-white bg-opacity-70 p-4 rounded-lg shadow-lg backdrop-blur-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Edit Item</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Add New Item</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="itemName" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
               Item Name
             </label>
             <input
               type="text"
-              id="itemName"
-              name="itemName"
-              value={formData.itemName}
+              id="name"
+              name="name"
+              value={formData.name}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.itemName ? "border-red-500" : "border-gray-300"
+                errors.name ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-              required
             />
-            {errors.itemName && <p className="text-xs text-red-500 mt-1">{errors.itemName}</p>}
+            {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
           </div>
 
           <div>
@@ -228,7 +238,6 @@ const ItemEdit = () => {
               className={`mt-1 block w-full px-4 py-2 border ${
                 errors.price ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-              required
             />
             {errors.price && <p className="text-xs text-red-500 mt-1">{errors.price}</p>}
           </div>
@@ -246,7 +255,6 @@ const ItemEdit = () => {
               className={`mt-1 block w-full text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border ${
                 errors.image ? "file:border-red-500" : "file:border-gray-300"
               } file:bg-gray-100 file:text-sm file:text-gray-700 hover:file:bg-gray-200`}
-              required
             />
             {errors.image && <p className="text-xs text-red-500 mt-1">{errors.image}</p>}
           </div>
@@ -264,3 +272,4 @@ const ItemEdit = () => {
 };
 
 export default ItemEdit;
+

@@ -284,7 +284,7 @@ const Admin = () => {
     e.preventDefault();
     if (validateAllFields()) {
       try {
-        const response = await axios.post("http://localhost:5000/api/users/register", formData);
+        const response = await axios.post("http://localhost:5000/api/v1/users/register", formData);
         console.log("Registration successful:", response.data);
         navigate("/", { state: { name: formData.name } });
       } catch (err) {
