@@ -43,7 +43,7 @@ const AdminDashboard = () => {
               href="/DeleteProductList"
               className="py-2 px-4 rounded hover:bg-blue-500 transition"
             >
-              Delete or Edite from ProductList
+              Food list
             </a>
           </div>
 
@@ -76,18 +76,7 @@ const AdminDashboard = () => {
           </div>
 
           {/* Home Button */}
-          <div className="bg-white shadow-md rounded-lg p-6 flex items-center animate-fade-in">
-            <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold">
-              <FaHome className="text-3xl" /> {/* Another icon */}
-            </div>
-            <a
-              href="/home"
-              className="py-2 px-4 rounded hover:bg-blue-500 transition"
-            >
-              Go back Home Page
-            </a>
-          </div>
-
+          
         </div>
       </main>
     </div>

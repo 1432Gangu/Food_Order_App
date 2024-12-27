@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 import Home2 from "../../assets/Images/Home2.webp"; // Ensure the path is correct
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    email: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (location.state) {
       setFormData({
-        name: location.state.name || "",
+        email: location.state.email || "",
         password: location.state.password || "",
       });
     }
@@ -31,16 +33,17 @@ const AdminLogin = () => {
       ...prevErrors,
       [name]: "",
     }));
+    setApiError("");
   };
 
   const validate = () => {
     const newErrors = {};
 
     // Email validation
-    if (!formData.name.trim()) {
-      newErrors.name = "Email is required.";
-    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.name)) {
-      newErrors.name = "Invalid email format.";
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)) {
+      newErrors.email = "Invalid email format.";
     }
 
     // Password validation
@@ -54,13 +57,23 @@ const AdminLogin = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      if (formData.name === "admin@gmail.com" && formData.password === "123456") {
-        navigate("/AdminDashboard");
-      } else {
-        setErrors({ form: "Invalid username or password." });
+      try {
+        const response = await axios.post("http://localhost:5000/api/v1/admin/login", formData);
+        if (response.data.token) {
+          // Save the token to localStorage or state
+          localStorage.setItem("authToken", response.data.token);
+          // Navigate to the AdminDashboard page
+          navigate("/AdminDashboard");
+        } else {
+          setApiError(response.data.error || "Login failed. Please try again.");
+        }
+      } catch (error) {
+        setApiError(
+          error.response?.data?.error || "An error occurred. Please try again."
+        );
       }
     }
   };
@@ -73,25 +86,25 @@ const AdminLogin = () => {
       <div className="w-full max-w-md bg-white bg-opacity-80 p-6 rounded-lg shadow-lg backdrop-blur-md">
         <h2 className="text-2xl font-bold text-center mb-6">Admin Login</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {errors.form && (
-            <p className="text-red-500 text-sm text-center">{errors.form}</p>
+          {apiError && (
+            <p className="text-red-500 text-sm text-center">{apiError}</p>
           )}
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email
             </label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+              id="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               className={`mt-1 block w-full px-4 py-2 border ${
-                errors.name ? "border-red-500" : "border-gray-300"
+                errors.email ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500`}
             />
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
             )}
           </div>
 

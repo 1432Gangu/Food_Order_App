@@ -52,7 +52,7 @@ const Login = () => {
 
     if (validate()) {
       try {
-        const response = await axios.post("http://localhost:5000/api/users/login", {
+        const response = await axios.post("http://localhost:5000/api/v1/users/login", {
           email: formData.email,
           password: formData.password,
         });

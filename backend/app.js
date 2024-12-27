@@ -15,8 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
-app.use("/api/users", userRoutes);
-app.use("/api/admin", adminRoutes);
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/admin", adminRoutes);
 app.use('/api/v1/products', productRoutes); 
 
 // Fallback route for 404
