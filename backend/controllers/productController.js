@@ -1,3 +1,4 @@
+
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -36,13 +37,13 @@ exports.getProductById = async (req, res) => {
 
 exports.addProduct = async (req, res) => {
     try {
-        const { name, price, image } = req.body;
+        const { name, price, imageUrl } = req.body;
 
         const newProduct = await prisma.product.create({
             data: {
                 name,
                 price,
-                image,
+                imageUrl,
                 
         },
         });
@@ -56,7 +57,7 @@ exports.addProduct = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
     const { id } = req.params;
-    const { name, price, image } = req.body;
+    const { name, price, imageUrl } = req.body;
 
     try {
         const updatedProduct = await prisma.product.update({
@@ -64,7 +65,7 @@ exports.updateProduct = async (req, res) => {
             data: {
                 name,
                 price,
-                image,
+                imageUrl,
                 
             },
         });
@@ -97,6 +98,3 @@ exports.deleteProduct = async (req, res) => {
         }
     }
 };
-
-
-
