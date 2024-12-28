@@ -1,5 +1,7 @@
 
 const { PrismaClient } = require('@prisma/client');
+const upload = multer({ dest: 'uploads/' }); // Define upload middleware
+
 const prisma = new PrismaClient();
 
 
@@ -48,12 +50,14 @@ exports.addProduct = async (req, res) => {
         },
         });
 
-    res.status(201).json(newProduct);
-} catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to create product' });
-}
+            res.status(201).json(newProduct);
+        } catch (error) {
+            console.error('Error creating product:', error); // Log the specific error
+            res.status(500).json({ error: 'Failed to create product', details: error.message });
+        }
+    });
 };
+
 
 exports.updateProduct = async (req, res) => {
     const { id } = req.params;

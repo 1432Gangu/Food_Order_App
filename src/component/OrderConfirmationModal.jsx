@@ -1,8 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+
 
 const OrderConfirmationModal = ({ isModalOpen, setIsModalOpen, cart, address }) => {
-    const navigate = useNavigate(); 
+    
 
     
     const closeModal = () => {
@@ -13,7 +13,7 @@ const OrderConfirmationModal = ({ isModalOpen, setIsModalOpen, cart, address }) 
     const handleConfirmOrder = () => {
         alert("Your order has been confirmed!");
         closeModal();
-        navigate("/Home"); 
+       
     };
 
     return (
