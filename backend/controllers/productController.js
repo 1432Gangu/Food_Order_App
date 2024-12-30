@@ -1,9 +1,8 @@
-
 const { PrismaClient } = require('@prisma/client');
-const upload = multer({ dest: 'uploads/' }); // Define upload middleware
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const prisma = new PrismaClient();
-
 
 exports.getAllProducts = async (req, res) => {
     try {
@@ -14,7 +13,6 @@ exports.getAllProducts = async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch products' });
     }
 };
-
 
 exports.getProductById = async (req, res) => {
     const { id } = req.params;
@@ -46,18 +44,16 @@ exports.addProduct = async (req, res) => {
                 name,
                 price,
                 imageUrl,
-                
-        },
+            },
         });
 
-            res.status(201).json(newProduct);
-        } catch (error) {
-            console.error('Error creating product:', error); // Log the specific error
-            res.status(500).json({ error: 'Failed to create product', details: error.message });
-        }
-    });
-};
+        res.status(201).json(newProduct);
+    } catch (error) {
+        console.error('Error creating product:', error); // Log the specific error
+        res.status(500).json({ error: 'Failed to create product', details: error.message });
+    }
 
+};
 
 exports.updateProduct = async (req, res) => {
     const { id } = req.params;
@@ -70,7 +66,6 @@ exports.updateProduct = async (req, res) => {
                 name,
                 price,
                 imageUrl,
-                
             },
         });
 
@@ -80,7 +75,6 @@ exports.updateProduct = async (req, res) => {
         res.status(500).json({ error: 'Failed to update product' });
     }
 };
-
 
 exports.deleteProduct = async (req, res) => {
     const { id } = req.params;
@@ -95,10 +89,11 @@ exports.deleteProduct = async (req, res) => {
         console.error(error);
 
         if (error.code === 'P2025') {
-
             res.status(404).json({ error: 'Product not found' });
         } else {
             res.status(500).json({ error: 'Failed to delete product' });
         }
     }
 };
+
+
