@@ -46,6 +46,7 @@ import AdminDashboard from "./component/Admnin/AdminDashboard";
 import ProductDetails from "../src/component/ProductDetails "
 import ProductList from "./Restaurants/ProductList";
 import DeleteProductList from "./Restaurants/DeleteProductList";
+import RestaurantList from "./Restaurants/RestaurantList";
 
 function App() {
   // Custom component to manage conditional rendering of Navbar and Footer
@@ -80,6 +81,7 @@ function App() {
         <Routes>
           <Route path="/Admin" element={<Admin />} />
           <Route path="/RestaurantDetail" element={<RestaurantDetail />} /> 
+          <Route path="/RestaurantList" element={<RestaurantList />} />
           <Route path="/AdminLogin" element={<AdminLogin />} />
           <Route path="/" element={<Login />} />
           <Route path="/Home" element={<Home />} />
@@ -89,6 +91,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/ItemEdit" element={<ItemEdit />} />
           <Route path="/AdminDashboard" element={<AdminDashboard />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/product/:id" element={<ProductDetails />} />
         </Routes>
       </Layout>
