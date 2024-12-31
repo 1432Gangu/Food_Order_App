@@ -177,7 +177,7 @@ const RestaurantDetail = () => {
             {loading ? "Adding..." : "Add Restaurant"}
           </button>
         </form>
-      </div>A
+      </div>
     </div>
   );
 };

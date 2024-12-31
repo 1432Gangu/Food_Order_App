@@ -9,9 +9,7 @@ function Navbar() {
   const products = useSelector((state) => state.cart.products);
   const navigate = useNavigate();
 
-  const handleLoginRegisterClick = () => {
-    navigate('/AdminLogin'); // Redirect to Admin login page
-  };
+
 
   return (
     <nav className="bg-gradient-to-r from-gray-100 via-white to-gray-100 shadow-md">
@@ -49,13 +47,7 @@ function Navbar() {
           </Link>
 
           {/* Login/Register Button */}
-          <div
-            className="hidden md:flex items-center space-x-2 bg-gray-800 text-white px-5 py-2 rounded-full hover:bg-red-500 transition duration-300 cursor-pointer"
-            onClick={handleLoginRegisterClick}
-          >
             <RiAdminFill className="text-xl" />
-            <span>Login</span>
-          </div>
 
           {/* Mobile Menu User Icon */}
           <button className="block md:hidden text-gray-700 hover:text-red-500 transition duration-300">

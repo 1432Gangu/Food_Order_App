@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProductList from "./ProductList"; // Ensure the correct path
+import Shop from "../pages/Shop";
 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -44,7 +45,9 @@ const RestaurantList = () => {
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             Food for {selectedRestaurant.RestaurantName}
           </h2>
+          <Shop/>
           <ProductList restaurantId={selectedRestaurant._id} />
+         
         </div>
       </div>
     );
@@ -79,6 +82,7 @@ const RestaurantList = () => {
                   <strong>Description:</strong> {restaurant.description}
                 </p>
               </div>
+              
               <div className="px-4 py-2 bg-gray-100 text-right">
                 <button
                   className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
@@ -90,6 +94,7 @@ const RestaurantList = () => {
             </div>
           ))}
         </div>
+        
       </div>
     </div>
   );
