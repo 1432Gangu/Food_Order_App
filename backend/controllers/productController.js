@@ -1,10 +1,36 @@
-const multer = require('multer');
 const { PrismaClient } = require('@prisma/client');
-const upload = multer({ dest: 'uploads/' }); // Define upload middleware
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const prisma = new PrismaClient();
 
-// Fetch all products
+const uploadDir = 'uploads/';
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, uploadDir);
+        },
+        filename: (req, file, cb) => {
+            const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+            cb(null, `${uniqueSuffix}${path.extname(file.originalname)}`);
+        },
+    }),
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        if (allowedTypes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Invalid file type. Only JPEG, PNG, and JPG are allowed.'));
+        }
+    },
+    limits: { fileSize: 1 * 1024 * 1024 }, 
+});
+
 exports.getAllProducts = async (req, res) => {
     try {
         const products = await prisma.product.findMany();
@@ -15,7 +41,6 @@ exports.getAllProducts = async (req, res) => {
     }
 };
 
-// Fetch product by ID
 exports.getProductById = async (req, res) => {
     const { id } = req.params;
 
@@ -35,22 +60,22 @@ exports.getProductById = async (req, res) => {
     }
 };
 
-// Add a new product
-exports.addProduct = async (req, res) => {
-    upload.single('image')(req, res, async (err) => {
-        if (err) {
-            return res.status(500).json({ error: 'File upload failed', details: err.message });
-        }
-
+exports.addProduct = [
+    upload.single('image'),
+    async (req, res) => {
         try {
             const { name, price } = req.body;
-            const image = req.file ? req.file.path : null; // Store file path
 
-            // Validate price
+            if (!name || !price) {
+                return res.status(400).json({ error: 'Name and price are required' });
+            }
+
             const priceFloat = parseFloat(price);
             if (isNaN(priceFloat)) {
                 return res.status(400).json({ error: 'Invalid price value' });
             }
+
+            const image = req.file ? req.file.path : null;
 
             const newProduct = await prisma.product.create({
                 data: {
@@ -65,43 +90,47 @@ exports.addProduct = async (req, res) => {
             console.error("Error creating product:", error);
             res.status(500).json({ error: 'Failed to create product', details: error.message });
         }
-    });
-};
+    },
+];
 
-// Update a product
-exports.updateProduct = async (req, res) => {
-    const { id } = req.params;
-    const { name, price } = req.body;
-    let { image } = req.body;
+exports.updateProduct = [
+    upload.single('image'),
+    async (req, res) => {
+        const { id } = req.params;
+        const { name, price } = req.body;
 
-    if (req.file) {
-        image = req.file.path; // Handle uploaded file
-    }
+        try {
+            let priceFloat;
+            if (price) {
+                priceFloat = parseFloat(price);
+                if (isNaN(priceFloat)) {
+                    return res.status(400).json({ error: 'Invalid price value' });
+                }
+            }
 
-    try {
-        // Validate price
-        const priceFloat = parseFloat(price);
-        if (price && isNaN(priceFloat)) {
-            return res.status(400).json({ error: 'Invalid price value' });
+            const data = {
+                ...(name && { name }),
+                ...(priceFloat && { price: priceFloat }),
+                ...(req.file && { image: req.file.path }),
+            };
+
+            const updatedProduct = await prisma.product.update({
+                where: { id: parseInt(id) },
+                data,
+            });
+
+            res.status(200).json(updatedProduct);
+        } catch (error) {
+            console.error("Error updating product:", error);
+            if (error.code === 'P2025') {
+                res.status(404).json({ error: 'Product not found' });
+            } else {
+                res.status(500).json({ error: 'Failed to update product', details: error.message });
+            }
         }
+    },
+];
 
-        const updatedProduct = await prisma.product.update({
-            where: { id: parseInt(id) },
-            data: {
-                name,
-                price: priceFloat,
-                image,
-            },
-        });
-
-        res.status(200).json(updatedProduct);
-    } catch (error) {
-        console.error("Error updating product:", error);
-        res.status(500).json({ error: 'Failed to update product', details: error.message });
-    }
-};
-
-// Delete a product
 exports.deleteProduct = async (req, res) => {
     const { id } = req.params;
 
@@ -116,11 +145,10 @@ exports.deleteProduct = async (req, res) => {
         });
     } catch (error) {
         console.error("Error deleting product:", error);
-
         if (error.code === 'P2025') {
             res.status(404).json({ error: 'Product not found' });
         } else {
-            res.status(500).json({ error: 'Failed to delete product' });
+            res.status(500).json({ error: 'Failed to delete product', details: error.message });
         }
     }
 };
