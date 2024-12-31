@@ -26,11 +26,17 @@ const AdminDashboard = () => {
       {/* Logout Button at the top-left */}
       <button
         onClick={handleLogout}
-        className="absolute top-6 left-6 px-6 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-all"
+        className="absolute top-6 right-6 px-6 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-all"
       >
         <RiLogoutBoxRLine className="text-xl inline-block mr-2" />
         Logout
       </button>
+      <a
+              href="/home"
+              className="absolute top-6 left-6 px-6 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-all"
+            >
+              Home
+            </a>
 
       <main className="flex-1 p-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -75,8 +81,18 @@ const AdminDashboard = () => {
             </a>
           </div>
 
-          {/* Home Button */}
-          
+          <div className="bg-white shadow-md rounded-lg p-6 flex items-center animate-fade-in">
+            <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold">
+              <FaHotel className="text-3xl" /> {/* Production icon */}
+            </div>
+            <a
+              href="/AllRestaurants"
+              className="py-2 px-4 rounded hover:bg-blue-500 transition"
+            >
+              Restaurants
+            </a>
+          </div>
+         
         </div>
       </main>
     </div>

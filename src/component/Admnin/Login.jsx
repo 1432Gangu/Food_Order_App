@@ -5,11 +5,13 @@ import Home2 from "../../assets/Images/Home2.webp";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: "", // Email field
+    email: "",
     password: "",
   });
 
   const [errors, setErrors] = useState({});
+  const [apiError, setApiError] = useState("");
+  const [loginType, setLoginType] = useState("user"); // 'user' or 'admin'
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -49,22 +51,27 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (validate()) {
       try {
-        const response = await axios.post("http://localhost:5000/api/v1/users/login", {
-          email: formData.email,
-          password: formData.password,
-        });
+        const apiEndpoint =
+          loginType === "admin"
+            ? "http://localhost:5000/api/v1/admin/login"
+            : "http://localhost:5000/api/v1/users/login";
+
+        const response = await axios.post(apiEndpoint, formData);
 
         if (response.data.token) {
           localStorage.setItem("authToken", response.data.token);
-          navigate("/home");
+
+          // Navigate to respective dashboard
+          navigate(loginType === "admin" ? "/AdminDashboard" : "/home");
         } else {
-          alert(response.data.error || "Login failed");
+          setApiError(response.data.error || "Login failed. Please try again.");
         }
       } catch (error) {
-        alert("Error during login: " + (error.response?.data?.error || error.message));
+        setApiError(
+          error.response?.data?.error || "An error occurred. Please try again."
+        );
       }
     }
   };
@@ -76,6 +83,31 @@ const Login = () => {
     >
       <div className="w-full max-w-md bg-white bg-opacity-70 p-4 rounded-lg shadow-lg backdrop-blur-md">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+        {/* Login Type Selection */}
+        <div className="flex justify-center space-x-4 mb-4">
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="loginType"
+              value="user"
+              checked={loginType === "user"}
+              onChange={() => setLoginType("user")}
+              className="mr-2"
+            />
+            User
+          </label>
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="loginType"
+              value="admin"
+              checked={loginType === "admin"}
+              onChange={() => setLoginType("admin")}
+              className="mr-2"
+            />
+            Admin
+          </label>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
@@ -94,7 +126,9 @@ const Login = () => {
                 errors.email ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500`}
             />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
           <div>
             <label
@@ -117,6 +151,9 @@ const Login = () => {
               <p className="text-red-500 text-sm mt-1">{errors.password}</p>
             )}
           </div>
+          {apiError && (
+            <p className="text-red-500 text-sm text-center">{apiError}</p>
+          )}
           <button
             type="submit"
             className="bg-red-600 px-8 py-2 text-white mt-4 hover:bg-red-700 transform transition-transform duration-300 hover:scale-105"
