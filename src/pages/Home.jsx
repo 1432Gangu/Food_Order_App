@@ -8,8 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import ProducteCurd from "../component/ProducteCurd";
 import { Link } from "react-router-dom"; // Import Link for navigation
 // import Shop from "./Shop";
-import ProductList from "../Restaurants/ProductList";
-import Shop from "./Shop";
+// import ProductList from "../Restaurants/ProductList";
+// import Shop from "./Shop";
+import RestaurantList from "../Restaurants/RestaurantList";
 
 
 function Home() {
@@ -18,13 +19,6 @@ function Home() {
   useEffect(() => {
     dispatch(setProducts(mocData));
   }, [dispatch]);
-
-  const restaurants = [
-    { id: 1, name: "Restaurant 1" },
-    { id: 2, name: "Restaurant 2" },
-    { id: 3, name: "Restaurant 3" },
-    { id: 4, name: "Restaurant 4" },
-  ];
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -72,32 +66,9 @@ function Home() {
             </div>
           </div>
         </div>
-
-        {/* Restaurants Section */}
-        <div className="mt-12 px-4 md:px-0">
-          <h2 className="text-3xl font-bold text-center text-gray-800">
-            Restaurants
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-            {restaurants.map((restaurant) => (
-              <div
-                key={restaurant.id}
-                className="bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition-transform transform hover:scale-105"
-              >
-                <Link
-                  to={`/restaurant/${restaurant.id}`}
-                  className="text-lg font-semibold text-red-500 hover:text-red-700"
-                >
-                  {restaurant.name}
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Info Section */}
+        <RestaurantList/>
         <InfoSection />
-
         {/* Category Section */}
         <CategorySection />
 
@@ -114,8 +85,8 @@ function Home() {
         </div>
       </div>
 
-      <Shop/>
-      <ProductList />
+      {/* <Shop/> */}
+      {/* <ProductList /> */}
     </div>
   );
 }
