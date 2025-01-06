@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import { toast } from "react-toastify";
 
-
 const ProductDetails = () => {
   const { id } = useParams(); // Get the product ID from the URL
   const location = useLocation();
@@ -24,15 +23,15 @@ const ProductDetails = () => {
     };
 
     dispatch(addToCart(productWithAddons));
-       toast.success('Product added successfully!', {
-         position: 'top-center',
-         autoClose: 3000,
-         hideProgressBar: false,
-         closeOnClick: true,
-         pauseOnHover: true,
-         draggable: true,
-         progress: undefined,
-       });
+    toast.success('Product added successfully!', {
+      position: 'top-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   const handleAddonChange = (addon) => {
@@ -57,7 +56,7 @@ const ProductDetails = () => {
         {/* Product Image */}
         <div className="relative">
           <img
-            src={product.image}
+            src={`http://localhost:5000/${product.image}`} // Updated image URL
             alt={product.name}
             className="w-full h-96 object-cover rounded-lg shadow-lg"
           />

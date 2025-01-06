@@ -12,7 +12,7 @@ const ProductCard = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
 
   const handleAddToCart = (e) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Prevent navigating to the product details page
     e.preventDefault();
 
     const productWithAddons = {
@@ -37,12 +37,28 @@ const ProductCard = ({ product }) => {
     navigate(`/product/${product.id}`, { state: { product } });
   };
 
+  const handleQuantityIncrease = (e) => {
+    e.stopPropagation(); // Prevent the click from triggering the navigation
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+
+  const handleQuantityDecrease = (e) => {
+    e.stopPropagation(); // Prevent the click from triggering the navigation
+    setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
+
+  // Format the price to INR (Indian Rupees)
+  const formattedPrice = new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+  }).format(product.price);
+
   const imageUrl = `http://localhost:5000/${product.image}`;
 
   return (
     <div
       className="bg-gradient-to-b from-white to-red-50 p-4 shadow-lg rounded-lg border hover:shadow-xl transform transition-transform duration-300 hover:scale-105 text-sm"
-      onClick={handleNavigate}
+      onClick={handleNavigate} // Navigation happens only when the product card (not the quantity) is clicked
       style={{ width: '200px' }}
     >
       <img
@@ -52,13 +68,34 @@ const ProductCard = ({ product }) => {
         onError={(e) => (e.target.src = '/placeholder.png')} // Handle broken images
       />
       <h3 className="font-bold text-md text-gray-800 truncate mb-2">{product.name}</h3>
-      <p className="text-red-600 font-semibold text-lg mb-2">${product.price}</p>
+      <p className="text-red-600 font-semibold text-lg mb-2">{formattedPrice}</p> {/* Display the formatted price */}
       <div className="flex items-center mb-3">
         {[...Array(4)].map((_, index) => (
           <FaStar key={index} className="text-yellow-500 text-sm" />
         ))}
         <span className="text-gray-500 text-xs ml-1">(4.0)</span>
       </div>
+
+      {/* Quantity Selector with + and - buttons */}
+      <div className="flex items-center justify-between mb-3">
+        <label className="text-sm font-medium">Quantity:</label>
+        <div className="flex items-center space-x-2">
+          <button
+            className="w-8 h-8 bg-red-500 text-white rounded-full font-bold text-lg"
+            onClick={handleQuantityDecrease}
+          >
+            -
+          </button>
+          <span className="text-sm">{quantity}</span>
+          <button
+            className="w-8 h-8 bg-red-500 text-white rounded-full font-bold text-lg"
+            onClick={handleQuantityIncrease}
+          >
+            +
+          </button>
+        </div>
+      </div>
+
       <button
         className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-2 rounded-lg text-sm font-semibold hover:from-red-600 hover:to-red-700 transition"
         onClick={(e) => handleAddToCart(e)}

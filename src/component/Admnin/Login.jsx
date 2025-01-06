@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import Home2 from "../../assets/Images/Home2.webp";
 
@@ -11,8 +11,19 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState("");
-  const [loginType, setLoginType] = useState("user"); // 'user' or 'admin'
+  const [loginType, setLoginType] = useState("user"); // Default to user login
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Determine login type from the route
+    const path = location.pathname;
+    if (path.includes("/admin")) {
+      setLoginType("admin");
+    } else {
+      setLoginType("user");
+    }
+  }, [location.pathname]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,6 +64,7 @@ const Login = () => {
     e.preventDefault();
     if (validate()) {
       try {
+        // Choose the correct endpoint based on loginType
         const apiEndpoint =
           loginType === "admin"
             ? "http://localhost:5000/api/v1/admin/login"
@@ -82,32 +94,9 @@ const Login = () => {
       style={{ backgroundImage: `url(${Home2})` }}
     >
       <div className="w-full max-w-md bg-white bg-opacity-70 p-4 rounded-lg shadow-lg backdrop-blur-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
-        {/* Login Type Selection */}
-        <div className="flex justify-center space-x-4 mb-4">
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="loginType"
-              value="user"
-              checked={loginType === "user"}
-              onChange={() => setLoginType("user")}
-              className="mr-2"
-            />
-            User
-          </label>
-          <label className="flex items-center">
-            <input
-              type="radio"
-              name="loginType"
-              value="admin"
-              checked={loginType === "admin"}
-              onChange={() => setLoginType("admin")}
-              className="mr-2"
-            />
-            Admin
-          </label>
-        </div>
+        <h2 className="text-2xl font-bold text-center mb-6">
+          {loginType === "admin" ? "Admin Login" : "User Login"}
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label

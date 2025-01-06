@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProductList from "./ProductList"; // Ensure the correct path
-import Shop from "../pages/Shop";
+import { FaArrowLeft } from "react-icons/fa"; // Import arrow icon from react-icons
 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -31,23 +31,33 @@ const RestaurantList = () => {
     fetchRestaurants();
   }, []);
 
+  // Function to determine cuisine type color
+  const getCuisineTypeColor = (type) => {
+    if (type === "veg") {
+      return "bg-green-500"; // Green color for veg
+    } else if (type === "non-veg") {
+      return "bg-yellow-500"; // Yellow color for non-veg
+    }
+    return "bg-gray-500"; // Default if no type is specified
+  };
+
   // If a restaurant is selected, display the ProductList component
   if (selectedRestaurant) {
     return (
       <div className="bg-gray-100 min-h-screen py-8">
         <div className="container mx-auto px-4">
+          {/* Arrow button to go back */}
           <button
             className="mb-4 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
             onClick={() => setSelectedRestaurant(null)}
           >
-            Back to Restaurants
+            <FaArrowLeft className="inline-block mr-2" />
+            
           </button>
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             Food for {selectedRestaurant.RestaurantName}
           </h2>
-          <Shop/>
           <ProductList restaurantId={selectedRestaurant._id} />
-         
         </div>
       </div>
     );
@@ -67,34 +77,24 @@ const RestaurantList = () => {
             >
               <div className="bg-gray-800 text-white p-4">
                 <h3 className="text-xl font-semibold">{restaurant.RestaurantName}</h3>
-                <p className="text-sm mt-1">
-                  <strong>Location:</strong> {restaurant.location}
-                </p>
+                {/* Cuisine type with color */}
+                <div
+                  className={`inline-block px-3 py-1 mt-2 text-white text-sm rounded-full ${getCuisineTypeColor(restaurant.cuisineType)}`}
+                >
+                  {restaurant.cuisineType === "veg" ? "Vegetarian" : "Non-Vegetarian"}
+                </div>
               </div>
-              <div className="p-4">
-                <p className="text-gray-700 text-sm mb-2">
-                  <strong>Contact:</strong> {restaurant.contactNumber}
-                </p>
-                <p className="text-gray-700 text-sm mb-2">
-                  <strong>Email:</strong> {restaurant.email}
-                </p>
-                <p className="text-gray-700 text-sm mb-2">
-                  <strong>Description:</strong> {restaurant.description}
-                </p>
-              </div>
-              
               <div className="px-4 py-2 bg-gray-100 text-right">
                 <button
                   className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors"
                   onClick={() => setSelectedRestaurant(restaurant)}
                 >
-                  View Details
+                  Shop Now
                 </button>
               </div>
             </div>
           ))}
         </div>
-        
       </div>
     </div>
   );
