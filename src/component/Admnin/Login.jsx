@@ -11,7 +11,7 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState("");
-  // const [loginType, setLoginType] = useState("user"); // 'user' or 'admin'
+  
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,7 +21,7 @@ const Login = () => {
       [name]: value,
     }));
 
-    // Clear the error for the field being modified
+   
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: "",
@@ -31,7 +31,7 @@ const Login = () => {
   const validate = () => {
     const newErrors = {};
 
-    // Email validation
+  
     if (!formData.email.trim()) {
       newErrors.email = "Email is required.";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {

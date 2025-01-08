@@ -12,7 +12,7 @@ const ProductCard = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
 
   const handleAddToCart = (e) => {
-    e.stopPropagation(); // Prevent navigating to the product details page
+    e.stopPropagation(); 
     e.preventDefault();
 
     const productWithAddons = {
@@ -38,16 +38,16 @@ const ProductCard = ({ product }) => {
   };
 
   const handleQuantityIncrease = (e) => {
-    e.stopPropagation(); // Prevent the click from triggering the navigation
+    e.stopPropagation(); 
     setQuantity((prevQuantity) => prevQuantity + 1);
   };
 
   const handleQuantityDecrease = (e) => {
-    e.stopPropagation(); // Prevent the click from triggering the navigation
+    e.stopPropagation();
     setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   };
 
-  // Format the price to INR (Indian Rupees)
+
   const formattedPrice = new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
@@ -58,17 +58,17 @@ const ProductCard = ({ product }) => {
   return (
     <div
       className="bg-gradient-to-b from-white to-red-50 p-4 shadow-lg rounded-lg border hover:shadow-xl transform transition-transform duration-300 hover:scale-105 text-sm"
-      onClick={handleNavigate} // Navigation happens only when the product card (not the quantity) is clicked
+      onClick={handleNavigate} 
       style={{ width: '200px' }}
     >
       <img
         src={imageUrl}
         alt={product.name}
         className="w-full h-36 object-cover rounded-lg mb-3"
-        onError={(e) => (e.target.src = '/placeholder.png')} // Handle broken images
+        onError={(e) => (e.target.src = '/placeholder.png')} 
       />
       <h3 className="font-bold text-md text-gray-800 truncate mb-2">{product.name}</h3>
-      <p className="text-red-600 font-semibold text-lg mb-2">{formattedPrice}</p> {/* Display the formatted price */}
+      <p className="text-red-600 font-semibold text-lg mb-2">{formattedPrice}</p>
       <div className="flex items-center mb-3">
         {[...Array(4)].map((_, index) => (
           <FaStar key={index} className="text-yellow-500 text-sm" />
@@ -76,7 +76,7 @@ const ProductCard = ({ product }) => {
         <span className="text-gray-500 text-xs ml-1">(4.0)</span>
       </div>
 
-      {/* Quantity Selector with + and - buttons */}
+  
       <div className="flex items-center justify-between mb-3">
         <label className="text-sm font-medium">Quantity:</label>
         <div className="flex items-center space-x-2">

@@ -2,13 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const productSlice = createSlice({
   name: "product",
-  initialState: { products: [] }, // Initial state with products array
+  initialState: { products: [] }, 
   reducers: {
     setProducts(state, action) {
-      state.products = action.payload; // Sets the list of products
+      state.products = action.payload; 
     },
     addProduct(state, action) {
-      state.products.push(action.payload); // Adds a new product to the list
+      state.products.push(action.payload);
     },
   },
 });

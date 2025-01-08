@@ -53,16 +53,16 @@ const ProductDetails = () => {
   return (
     <div className="container mx-auto p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Product Image */}
+     
         <div className="relative">
           <img
-            src={`http://localhost:5000/${product.image}`} // Updated image URL
+            src={`http://localhost:5000/${product.image}`} 
             alt={product.name}
             className="w-full h-96 object-cover rounded-lg shadow-lg"
           />
         </div>
 
-        {/* Product Details */}
+       
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <h1 className="text-3xl font-bold text-gray-800 mb-4">{product.name}</h1>
           <p className="text-red-600 text-xl font-semibold mb-3">${product.price}</p>
@@ -74,7 +74,7 @@ const ProductDetails = () => {
 
           <p className="mt-4 text-gray-700 mb-6">{product.description}</p>
 
-          {/* Addons Section */}
+          
           <div className="mt-4">
             <h4 className="font-medium mb-2 text-lg">Choose Addons</h4>
             <div className="flex flex-wrap gap-3">
@@ -97,7 +97,7 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          {/* Quantity Selector */}
+       
           <div className="mt-4">
             <label className="block text-sm font-medium mb-2">Quantity</label>
             <input
@@ -109,7 +109,7 @@ const ProductDetails = () => {
             />
           </div>
 
-          {/* Add to Cart Button */}
+          
           <button
             className="mt-6 px-6 py-2 bg-red-600 text-white rounded-lg text-lg font-semibold hover:bg-red-700 transition-all"
             onClick={handleAddToCart}

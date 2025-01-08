@@ -106,7 +106,7 @@ const AllRestaurants = ({ initialRestaurants }) => {
       className="min-h-screen flex flex-col items-center bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: `url(${RBackground})` }}
     >
-      {/* Back Button */}
+     
       <div className="w-full flex justify-start px-4 mt-4">
         <button
           onClick={handleGoBackToDashboard}
@@ -126,10 +126,10 @@ const AllRestaurants = ({ initialRestaurants }) => {
         </button>
       </div>
 
-      {/* Table */}
+     
       <div className="overflow-x-auto w-full max-w-6xl px-4 mt-6">
         <table className="w-full border-collapse border border-gray-300 text-sm">
-          {/* Table Header */}
+          
           <thead className="bg-gray-800 text-white">
             <tr>
               <th className="px-4 py-2 text-left">#</th>
@@ -142,7 +142,7 @@ const AllRestaurants = ({ initialRestaurants }) => {
             </tr>
           </thead>
 
-          {/* Table Body */}
+          
           <tbody className="bg-gray-700 text-white">
             {restaurants.map((restaurant, index) => (
               <tr key={restaurant.id} className="hover:bg-gray-600">

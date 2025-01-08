@@ -24,7 +24,7 @@ const Cart = () => {
     alert(`You selected ${method} as the payment method.`);
   };
 
-  // Format the price in INR (Indian Rupees)
+  
   const formatPriceInINR = (price) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
@@ -38,7 +38,7 @@ const Cart = () => {
         <div>
           <h3 className="text-2xl font-semibold mb-4">SHOPPING CART</h3>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Product List */}
+           
             <div className="col-span-2 space-y-4">
               {cart.products.map((product) => (
                 <div key={product.id} className="bg-white p-4 rounded shadow">
@@ -50,7 +50,7 @@ const Cart = () => {
                     />
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold">{product.name}</h3>
-                      <p className="text-gray-500">{formatPriceInINR(product.price)}</p> {/* Display price in INR */}
+                      <p className="text-gray-500">{formatPriceInINR(product.price)}</p>
                     </div>
                     <div className="flex items-center space-x-2">
                       <button
@@ -68,7 +68,7 @@ const Cart = () => {
                       </button>
                     </div>
                     <p className="font-bold">
-                      {formatPriceInINR(product.quantity * product.price)} {/* Total price per product */}
+                      {formatPriceInINR(product.quantity * product.price)} 
                     </p>
                     <button
                       className="text-red-600 hover:text-red-800"
@@ -80,7 +80,7 @@ const Cart = () => {
                 </div>
               ))}
             </div>
-            {/* Cart Total */}
+         
             <div className="bg-white p-6 rounded shadow">
               <h3 className="text-xl font-semibold mb-4">CART TOTAL</h3>
               <div className="space-y-2">
@@ -94,7 +94,7 @@ const Cart = () => {
                 </div>
                 <div className="flex justify-between font-bold text-lg">
                   <span>Total Price</span>
-                  <span>{formatPriceInINR(cart.totalPrice)}</span> {/* Display total price in INR */}
+                  <span>{formatPriceInINR(cart.totalPrice)}</span> 
                 </div>
               </div>
               <button
@@ -105,7 +105,7 @@ const Cart = () => {
               </button>
             </div>
           </div>
-          {/* Modals */}
+         
           <PaymentMethodModal
             isPaymentModalOpen={isPaymentModalOpen}
             setIsPaymentModalOpen={setIsPaymentModalOpen}

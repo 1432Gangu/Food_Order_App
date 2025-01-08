@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ProductList from "./ProductList"; // Ensure the correct path
-import { FaArrowLeft } from "react-icons/fa"; // Import arrow icon from react-icons
-
+import ProductList from "./ProductList";
+import { FaArrowLeft } from "react-icons/fa"; 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -31,22 +30,22 @@ const RestaurantList = () => {
     fetchRestaurants();
   }, []);
 
-  // Function to determine cuisine type color
+  
   const getCuisineTypeColor = (type) => {
     if (type === "veg") {
-      return "bg-green-500"; // Green color for veg
+      return "bg-green-500"; 
     } else if (type === "non-veg") {
-      return "bg-yellow-500"; // Yellow color for non-veg
+      return "bg-yellow-500";
     }
-    return "bg-gray-500"; // Default if no type is specified
+    return "bg-gray-500"; 
   };
 
-  // If a restaurant is selected, display the ProductList component
+
   if (selectedRestaurant) {
     return (
       <div className="bg-gray-100 min-h-screen py-8">
         <div className="container mx-auto px-4">
-          {/* Arrow button to go back */}
+        
           <button
             className="mb-4 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
             onClick={() => setSelectedRestaurant(null)}
@@ -77,7 +76,7 @@ const RestaurantList = () => {
             >
               <div className="bg-gray-800 text-white p-4">
                 <h3 className="text-xl font-semibold">{restaurant.RestaurantName}</h3>
-                {/* Cuisine type with color */}
+             
                 <div
                   className={`inline-block px-3 py-1 mt-2 text-white text-sm rounded-full ${getCuisineTypeColor(restaurant.cuisineType)}`}
                 >

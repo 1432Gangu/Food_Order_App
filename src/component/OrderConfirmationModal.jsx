@@ -1,6 +1,5 @@
 import React from "react";
 
-// Helper function to format price in INR
 const formatPriceInINR = (price) => {
     return new Intl.NumberFormat('en-IN', {
         style: 'currency',
@@ -47,7 +46,7 @@ const OrderConfirmationModal = ({ isModalOpen, setIsModalOpen, cart, address }) 
                                     >
                                         <span>{product.name} (x{product.quantity})</span>
                                         <span className="font-medium text-gray-800">
-                                            {formatPriceInINR(product.price * product.quantity)} {/* Price in INR */}
+                                            {formatPriceInINR(product.price * product.quantity)} 
                                         </span>
                                     </div>
                                 ))}
@@ -56,7 +55,7 @@ const OrderConfirmationModal = ({ isModalOpen, setIsModalOpen, cart, address }) 
                         <div className="flex justify-between mb-4">
                             <span>Total Price</span>
                             <span className="text-green-500 font-semibold">
-                                {formatPriceInINR(cart.totalPrice)} {/* Total Price in INR */}
+                                {formatPriceInINR(cart.totalPrice)} 
                             </span>
                         </div>
                         <div className="flex justify-between mt-6">
