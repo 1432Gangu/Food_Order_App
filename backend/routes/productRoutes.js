@@ -17,7 +17,3 @@ router.delete('/deleteProduct/:id', deleteProduct);
 
 
 module.exports = router;
-
-
-
-

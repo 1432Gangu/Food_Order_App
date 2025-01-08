@@ -110,65 +110,65 @@
 //             />
 //             {errors.RestaurantName && <p className="text-red-500 text-xs mt-1">{errors.RestaurantName}</p>}
 //           </div>
-          // <div>
-          //   <label className="block text-sm font-medium text-gray-800" htmlFor="location">
-          //     Location
-          //   </label>
-          //   <input
-          //     type="text"
-          //     id="location"
-          //     name="location"
-          //     value={newRestaurant.location}
-          //     onChange={handleInputChange}
-          //     className={`mt-1 block w-full p-2 border rounded-md bg-gray-50 text-sm ${errors.location ? "border-red-500" : "border-gray-300"}`}
-          //     placeholder="Enter location"
-          //   />
-          //   {errors.location && <p className="text-red-500 text-xs mt-1">{errors.location}</p>}
-          // </div>
-          // <div>
-          //   <label className="block text-sm font-medium text-gray-800" htmlFor="contactNumber">
-          //     Contact Number
-          //   </label>
-          //   <input
-          //     type="text"
-          //     id="contactNumber"
-          //     name="contactNumber"
-          //     value={newRestaurant.contactNumber}
-          //     onChange={handleInputChange}
-          //     className={`mt-1 block w-full p-2 border rounded-md bg-gray-50 text-sm ${errors.contactNumber ? "border-red-500" : "border-gray-300"}`}
-          //     placeholder="Enter contact number"
-          //   />
-          //   {errors.contactNumber && <p className="text-red-500 text-xs mt-1">{errors.contactNumber}</p>}
-          // </div>
-          // <div>
-          //   <label className="block text-sm font-medium text-gray-800" htmlFor="email">
-          //     Email
-          //   </label>
-          //   <input
-          //     type="email"
-          //     id="email"
-          //     name="email"
-          //     value={newRestaurant.email}
-          //     onChange={handleInputChange}
-          //     className={`mt-1 block w-full p-2 border rounded-md bg-gray-50 text-sm ${errors.email ? "border-red-500" : "border-gray-300"}`}
-          //     placeholder="Enter email"
-          //   />
-          //   {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-          // </div>
-          // <div>
-          //   <label className="block text-sm font-medium text-gray-800" htmlFor="description">
-          //     Description
-          //   </label>
-          //   <textarea
-          //     id="description"
-          //     name="description"
-          //     value={newRestaurant.description}
-          //     onChange={handleInputChange}
-          //     className={`mt-1 block w-full p-2 border rounded-md bg-gray-50 text-sm ${errors.description ? "border-red-500" : "border-gray-300"}`}
-          //     placeholder="Enter description"
-          //   />
-          //   {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
-          // </div>
+// <div>
+//   <label className="block text-sm font-medium text-gray-800" htmlFor="location">
+//     Location
+//   </label>
+//   <input
+//     type="text"
+//     id="location"
+//     name="location"
+//     value={newRestaurant.location}
+//     onChange={handleInputChange}
+//     className={`mt-1 block w-full p-2 border rounded-md bg-gray-50 text-sm ${errors.location ? "border-red-500" : "border-gray-300"}`}
+//     placeholder="Enter location"
+//   />
+//   {errors.location && <p className="text-red-500 text-xs mt-1">{errors.location}</p>}
+// </div>
+// <div>
+//   <label className="block text-sm font-medium text-gray-800" htmlFor="contactNumber">
+//     Contact Number
+//   </label>
+//   <input
+//     type="text"
+//     id="contactNumber"
+//     name="contactNumber"
+//     value={newRestaurant.contactNumber}
+//     onChange={handleInputChange}
+//     className={`mt-1 block w-full p-2 border rounded-md bg-gray-50 text-sm ${errors.contactNumber ? "border-red-500" : "border-gray-300"}`}
+//     placeholder="Enter contact number"
+//   />
+//   {errors.contactNumber && <p className="text-red-500 text-xs mt-1">{errors.contactNumber}</p>}
+// </div>
+// <div>
+//   <label className="block text-sm font-medium text-gray-800" htmlFor="email">
+//     Email
+//   </label>
+//   <input
+//     type="email"
+//     id="email"
+//     name="email"
+//     value={newRestaurant.email}
+//     onChange={handleInputChange}
+//     className={`mt-1 block w-full p-2 border rounded-md bg-gray-50 text-sm ${errors.email ? "border-red-500" : "border-gray-300"}`}
+//     placeholder="Enter email"
+//   />
+//   {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+// </div>
+// <div>
+//   <label className="block text-sm font-medium text-gray-800" htmlFor="description">
+//     Description
+//   </label>
+//   <textarea
+//     id="description"
+//     name="description"
+//     value={newRestaurant.description}
+//     onChange={handleInputChange}
+//     className={`mt-1 block w-full p-2 border rounded-md bg-gray-50 text-sm ${errors.description ? "border-red-500" : "border-gray-300"}`}
+//     placeholder="Enter description"
+//   />
+//   {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
+// </div>
 //           <button
 //             type="submit"
 //             className="w-full py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -225,10 +225,13 @@ const RestaurantDetail = () => {
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newRestaurant.email)) {
       newErrors.email = "Enter a valid email address.";
     }
+    
     if (!newRestaurant.description.trim())
       newErrors.description = "Description is required.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+    
+    
   };
 
   const handleSubmit = async (e) => {
@@ -245,7 +248,10 @@ const RestaurantDetail = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newRestaurant),
+          body: JSON.stringify({
+            ...newRestaurant, // Include all fields
+          }),
+          
         }
       );
 
@@ -261,6 +267,7 @@ const RestaurantDetail = () => {
         contactNumber: "",
         email: "",
         description: "",
+        category: "",
       });
 
       // Navigate to the home page after a short delay
@@ -289,7 +296,7 @@ const RestaurantDetail = () => {
             onClick={() => navigate("/AdminDashboard")}
             className="text-blue-600 hover:underline text-l 45"
           >
-            ← 
+            ←
           </button>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -306,9 +313,8 @@ const RestaurantDetail = () => {
               name="RestaurantName"
               value={newRestaurant.RestaurantName}
               onChange={handleInputChange}
-              className={`mt-1 block w-full p-2 border rounded-md bg-gray-50 text-sm ${
-                errors.RestaurantName ? "border-red-500" : "border-gray-300"
-              }`}
+              className={`mt-1 block w-full p-2 border rounded-md bg-gray-50 text-sm ${errors.RestaurantName ? "border-red-500" : "border-gray-300"
+                }`}
               placeholder="Enter restaurant name"
             />
             {errors.RestaurantName && (
@@ -376,6 +382,28 @@ const RestaurantDetail = () => {
             />
             {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-800" htmlFor="category">
+              Category
+            </label>
+            <select
+              id="category"
+              name="category"
+              value={newRestaurant.category}
+              onChange={handleInputChange}
+              className={`mt-1 block w-full p-2 border rounded-md bg-gray-50 text-sm ${
+                errors.category ? "border-red-500" : "border-gray-300"
+              }`}
+            >
+              <option value="">Select a category</option>
+              <option value="Veg">Veg</option>
+              <option value="Non-Veg">Non-Veg</option>
+            </select>
+            {errors.category && (
+              <p className="text-red-500 text-xs mt-1">{errors.category}</p>
+            )}
+          </div>
+          {/* Other form fields remain unchanged */}
           <button
             type="submit"
             className="w-full py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
