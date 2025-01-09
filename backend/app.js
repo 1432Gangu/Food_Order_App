@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
-const productRoutes = require('./routes/productRoutes');
+const itemRoutes = require('./routes/itemRoutes');
 const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const restaurantRoutes = require('./routes/restaurantRoutes');
@@ -17,7 +17,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/admin', adminRoutes);
-app.use('/api/v1/products', productRoutes);
+app.use('/api/v1/items', itemRoutes);
 app.use('/api/v1/restaurants', restaurantRoutes);
 
 app.use((req, res, next) => {

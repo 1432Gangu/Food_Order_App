@@ -7,33 +7,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum RestaurantType {
+  VEG
+  NON_VEG
+}
+
+enum Role {
+  admin
+  user
+}
+
 model User {
   id              Int      @id @default(autoincrement())
   name            String
   email           String   @unique
   password        String
   confirmPassword String
-  role            String   @default("user")
+  role            Role     @default(user)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @default(now()) @updatedAt
 }
 
-model Product {
+model Item {
+  id              Int         @id @default(autoincrement())
+  name            String
+  price           Float
+  image           String
+  categoryName    String
+  restaurantName  String
+  category        Category    @relation(fields: [categoryName], references: [name], onDelete: Cascade)
+  restaurant      Restaurant  @relation(fields: [restaurantName], references: [restaurantName], onDelete: Cascade)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @default(now()) @updatedAt
+}
+
+model Category {
   id        Int      @id @default(autoincrement())
-  name      String
-  price     Float
-  image     String
+  name      String   @unique
+  items     Item[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Restaurant {
-  id                 Int      @id @default(autoincrement())
-  RestaurantName     String
-  location           String
-  contactNumber      String
-  email              String   @unique
-  description        String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  id             Int             @id @default(autoincrement())
+  restaurantName String          @unique
+  location       String
+  contactNumber  String
+  email          String          @unique
+  description    String?
+  type           RestaurantType  @default(VEG)
+  items          Item[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
