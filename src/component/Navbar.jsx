@@ -14,12 +14,12 @@ function Navbar() {
   return (
     <nav className="bg-gradient-to-r from-gray-100 via-white to-gray-100 shadow-md">
       <div className="container mx-auto px-4 md:px-16 lg:px-24 py-4 flex justify-between items-center">
-        {/* Logo Section */}
+       
         <div className="text-2xl font-extrabold text-gray-800 tracking-wide hover:text-red-500 transition duration-300">
           <Link to="/">E-Shop</Link>
         </div>
 
-        {/* Search Bar Section */}
+      
         <div className="relative flex-1 mx-4 hidden md:block">
           <form>
             <input
@@ -31,9 +31,9 @@ function Navbar() {
           </form>
         </div>
 
-        {/* User Actions Section */}
+        
         <div className="flex items-center space-x-6">
-          {/* Cart Icon */}
+    
           <Link
             to="/cart"
             className="relative text-gray-700 hover:text-red-500 transition duration-300"
@@ -46,17 +46,17 @@ function Navbar() {
             )}
           </Link>
 
-          {/* Login/Register Button */}
+         
             <RiAdminFill className="text-xl" />
 
-          {/* Mobile Menu User Icon */}
+         
           <button className="block md:hidden text-gray-700 hover:text-red-500 transition duration-300">
             <FaUser className="text-2xl" />
           </button>
         </div>
       </div>
 
-      {/* Navigation Links Section */}
+     
       <div className="bg-gradient-to-r from-red-100 via-white to-red-100 py-3">
         <div className="container mx-auto flex justify-center space-x-8 text-sm font-medium text-gray-700">
           <Link to="/Home" className="hover:text-red-500 transition duration-300">
@@ -65,13 +65,6 @@ function Navbar() {
           <Link to="/ProductList" className="hover:text-red-500 transition duration-300">
             Items
           </Link>
-          {/* <Link to="/Contact" className="hover:text-red-500 transition duration-300">
-            Contact
-          </Link> */}
-          {/* <Link to="/ItemEdit" className="hover:text-red-500 transition duration-300">
-            Item Edit
-          </Link> */}
-          
         </div>
       </div>
     </nav>

@@ -11,7 +11,11 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
   const [apiError, setApiError] = useState("");
+<<<<<<< HEAD
   // const [loginType, setLoginType] = useState("user"); // 'user' or 'admin'
+=======
+  
+>>>>>>> 37e3a8e109ec665c3abc5ea0f5ade938cd897b5e
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,7 +25,7 @@ const Login = () => {
       [name]: value,
     }));
 
-    // Clear the error for the field being modified
+   
     setErrors((prevErrors) => ({
       ...prevErrors,
       [name]: "",
@@ -31,14 +35,12 @@ const Login = () => {
   const validate = () => {
     const newErrors = {};
 
-    // Email validation
+  
     if (!formData.email.trim()) {
       newErrors.email = "Email is required.";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Enter a valid email address.";
     }
-
-    // Password validation
     if (!formData.password.trim()) {
       newErrors.password = "Password is required.";
     } else if (formData.password.length < 6) {
@@ -62,8 +64,11 @@ const Login = () => {
 
         if (response.data.token) {
           localStorage.setItem("authToken", response.data.token);
+<<<<<<< HEAD
 
           // Navigate to respective dashboard
+=======
+>>>>>>> 37e3a8e109ec665c3abc5ea0f5ade938cd897b5e
           navigate(formData.email === "gangu@foodorderapp.com" ? "/AdminDashboard" : "/home");
         } else {
           setApiError(response.data.error || "Login failed. Please try again.");
@@ -83,6 +88,7 @@ const Login = () => {
     >
       <div className="w-full max-w-md bg-white bg-opacity-70 p-4 rounded-lg shadow-lg backdrop-blur-md">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
+<<<<<<< HEAD
         {/* Login Type Selection */}
         {/* <div className="flex justify-center space-x-4 mb-4">
           <label className="flex items-center">
@@ -108,6 +114,8 @@ const Login = () => {
             Admin
           </label>
         </div> */}
+=======
+>>>>>>> 37e3a8e109ec665c3abc5ea0f5ade938cd897b5e
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
@@ -176,6 +184,7 @@ const Login = () => {
 
 export default Login;
 
+<<<<<<< HEAD
 
 
 
@@ -353,3 +362,5 @@ export default Login;
 // };
 
 // export default Login;
+=======
+>>>>>>> 37e3a8e109ec665c3abc5ea0f5ade938cd897b5e

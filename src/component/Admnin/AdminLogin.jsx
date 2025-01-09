@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import Home2 from "../../assets/Images/Home2.webp"; // Ensure the path is correct
+import Home2 from "../../assets/Images/Home2.webp"; 
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -39,14 +39,14 @@ const AdminLogin = () => {
   const validate = () => {
     const newErrors = {};
 
-    // Email validation
+    
     if (!formData.email.trim()) {
       newErrors.email = "Email is required.";
     } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formData.email)) {
       newErrors.email = "Invalid email format.";
     }
 
-    // Password validation
+  
     if (!formData.password.trim()) {
       newErrors.password = "Password is required.";
     } else if (formData.password.length < 6) {
@@ -63,9 +63,9 @@ const AdminLogin = () => {
       try {
         const response = await axios.post("http://localhost:5000/api/v1/admin/login", formData);
         if (response.data.token) {
-          // Save the token to localStorage or state
+        
           localStorage.setItem("authToken", response.data.token);
-          // Navigate to the AdminDashboard page
+          
           navigate("/AdminDashboard");
         } else {
           setApiError(response.data.error || "Login failed. Please try again.");

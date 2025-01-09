@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import emptyCartImage from '../assets/Images/emtycart1.gif';
 import { FaTrashAlt } from 'react-icons/fa';
-// import { increment, decrement, removeFromCart } from '../redux/cartSlice';
-// import { increment, decrement, removeFromCart } from '../redux/cartSlice';
-
-import { increment, decrement, removeFromCart } from "../redux/cartSlice"
-
-
+import { increment, decrement, removeFromCart } from '../redux/cartSlice';
 import OrderConfirmationModal from '../component/OrderConfirmationModal';
 import PaymentMethodModal from '../component/PaymentMethodModal';
 
@@ -29,102 +24,88 @@ const Cart = () => {
     alert(`You selected ${method} as the payment method.`);
   };
 
+  
+  const formatPriceInINR = (price) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+    }).format(price);
+  };
+
   return (
-    <div className="container mx-auto py-8 min-h-96 px-4 md:px-16 lg:px-24">
+    <div className="container mx-auto py-8 px-4 min-h-screen">
       {cart.products.length > 0 ? (
         <div>
           <h3 className="text-2xl font-semibold mb-4">SHOPPING CART</h3>
-          <div className="flex flex-col md:flex-row justify-between space-x-0 md:space-x-10 mt-8">
-            {/* PRODUCT LIST section */}
-            <div className="md:w-2/3">
-              <div className="flex justify-between border-b items-center mb-4 text-xs font-bold">
-                <p>PRODUCTS</p>
-                <div className="flex space-x-11">
-                  <p>PRICE</p>
-                  <p>QUANTITY</p>
-                  <p>SUBTOTAL</p>
-                  <p>REMOVE</p>
-                </div>
-              </div>
-              <div>
-                {/* Mapping through products */}
-                {cart.products.map((product) => (
-                  <div
-                    key={product.id}
-                    className="flex items-center justify-between p-3 border-b"
-                  >
-                    <div className="md:flex items-center space-x-4">
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-16 h-16 object-contain rounded"
-                      />
-                      <div className="flex-1 ml-4">
-                        <h3 className="text-lg font-semibold">{product.name}</h3>
-                      </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+           
+            <div className="col-span-2 space-y-4">
+              {cart.products.map((product) => (
+                <div key={product.id} className="bg-white p-4 rounded shadow">
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={`http://localhost:5000/${product.image}`}
+                      alt={product.name}
+                      className="w-20 h-20 object-cover rounded"
+                    />
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold">{product.name}</h3>
+                      <p className="text-gray-500">{formatPriceInINR(product.price)}</p>
                     </div>
-                    <div className="flex space-x-12 items-center">
-                      <p>${product.price}</p>
-                      <div className="flex items-center justify-center border">
-                        <button
-                          className="text-xl font-bold px-1.5 border"
-                          onClick={() => dispatch(decrement(product.id))}
-                        >
-                          -
-                        </button>
-                        <p className="text-xl px-2">{product.quantity}</p>
-                        <button
-                          className="text-xl px-1 border"
-                          onClick={() => dispatch(increment(product.id))}
-                        >
-                          +
-                        </button>
-                      </div>
-                      <p>${(product.quantity * product.price).toFixed(2)}</p>
+                    <div className="flex items-center space-x-2">
                       <button
-                        className="text-red-500 hover:text-red-700"
-                        onClick={() => dispatch(removeFromCart(product.id))}
+                        className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                        onClick={() => dispatch(decrement(product.id))}
                       >
-                        <FaTrashAlt />
+                        -
+                      </button>
+                      <span>{product.quantity}</span>
+                      <button
+                        className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                        onClick={() => dispatch(increment(product.id))}
+                      >
+                        +
                       </button>
                     </div>
+                    <p className="font-bold">
+                      {formatPriceInINR(product.quantity * product.price)} 
+                    </p>
+                    <button
+                      className="text-red-600 hover:text-red-800"
+                      onClick={() => dispatch(removeFromCart(product.id))}
+                    >
+                      <FaTrashAlt />
+                    </button>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-
-            {/* CART TOTAL section */}
-            <div className="md:w-1/3 bg-white p-6 rounded-lg shadow-md border">
-              <h3 className="text-sm font-semibold mb-5 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
-                CART TOTAL
-              </h3>
-
-              <div className="flex justify-between mb-5 border-b pb-1">
-                <span className="text-sm">Total Items</span>
-                <span>{cart.totalQuantity}</span>
+         
+            <div className="bg-white p-6 rounded shadow">
+              <h3 className="text-xl font-semibold mb-4">CART TOTAL</h3>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span>Total Items</span>
+                  <span>{cart.totalQuantity}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Shipping Address</span>
+                  <span>{address}</span>
+                </div>
+                <div className="flex justify-between font-bold text-lg">
+                  <span>Total Price</span>
+                  <span>{formatPriceInINR(cart.totalPrice)}</span> 
+                </div>
               </div>
-              <div className="mb-4 border-b pb-2">
-                <p>Shipping</p>
-                <p className="ml-2">Shipping to:</p>
-                <span className="text-xs font-bold">{address}</span>
-              </div>
-              <div className="flex justify-between mb-4">
-                <span>Total Price</span>
-                <span className="text-green-500 font-semibold">
-                  ${cart.totalPrice.toFixed(2)}
-                </span>
-              </div>
-
               <button
-                className="w-full bg-red-600 text-white py-2 hover:bg-red-800"
+                className="w-full mt-4 bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
                 onClick={handleProceedToOrder}
               >
                 Proceed to Order
               </button>
             </div>
           </div>
-
-          {/* Modals */}
+         
           <PaymentMethodModal
             isPaymentModalOpen={isPaymentModalOpen}
             setIsPaymentModalOpen={setIsPaymentModalOpen}
@@ -138,8 +119,9 @@ const Cart = () => {
           />
         </div>
       ) : (
-        <div className="flex justify-center">
-          <img src={emptyCartImage} alt="Empty Cart" className="h-96" />
+        <div className="flex flex-col items-center justify-center">
+          <img src={emptyCartImage} alt="Empty Cart" className="w-64 h-64" />
+          <p className="text-lg font-medium mt-4">Your cart is empty!</p>
         </div>
       )}
     </div>

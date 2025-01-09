@@ -8,7 +8,7 @@ const PaymentMethodModal = ({ isPaymentModalOpen, setIsPaymentModalOpen, handleP
 
   const closeModal = () => {
     setIsPaymentModalOpen(false);
-    navigate('/cart'); // Navigate to the Cart page
+    navigate('/cart'); 
   };
 
   const notify = (method) => {
@@ -21,8 +21,8 @@ const PaymentMethodModal = ({ isPaymentModalOpen, setIsPaymentModalOpen, handleP
       draggable: true,
       progress: undefined,
     });
-    handlePayment(method); // Call the original handlePayment function
-    setIsPaymentModalOpen(false); // Close modal after selecting payment method
+    handlePayment(method);
+    setIsPaymentModalOpen(false); 
   };
 
   return (

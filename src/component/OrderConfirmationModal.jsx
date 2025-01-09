@@ -1,19 +1,21 @@
 import React from "react";
 
+const formatPriceInINR = (price) => {
+    return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+    }).format(price);
+};
 
 const OrderConfirmationModal = ({ isModalOpen, setIsModalOpen, cart, address }) => {
-    
 
-    
     const closeModal = () => {
         setIsModalOpen(false);
     };
 
-   
     const handleConfirmOrder = () => {
         alert("Your order has been confirmed!");
         closeModal();
-       
     };
 
     return (
@@ -44,7 +46,7 @@ const OrderConfirmationModal = ({ isModalOpen, setIsModalOpen, cart, address }) 
                                     >
                                         <span>{product.name} (x{product.quantity})</span>
                                         <span className="font-medium text-gray-800">
-                                            ${(product.price * product.quantity).toFixed(2)}
+                                            {formatPriceInINR(product.price * product.quantity)} 
                                         </span>
                                     </div>
                                 ))}
@@ -52,7 +54,9 @@ const OrderConfirmationModal = ({ isModalOpen, setIsModalOpen, cart, address }) 
                         </div>
                         <div className="flex justify-between mb-4">
                             <span>Total Price</span>
-                            <span className="text-green-500 font-semibold">${cart.totalPrice.toFixed(2)}</span>
+                            <span className="text-green-500 font-semibold">
+                                {formatPriceInINR(cart.totalPrice)} 
+                            </span>
                         </div>
                         <div className="flex justify-between mt-6">
                             <button

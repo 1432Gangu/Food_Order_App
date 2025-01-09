@@ -1,16 +1,19 @@
+
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../../redux/productSlice";
 import AdminLogin from "../../assets/Images/AdminLogin.jpg";
-import { FaSave } from "react-icons/fa"; // Import the icon
+import { FaSave } from "react-icons/fa"; 
 
 const ItemEdit = () => {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
     image: null,
+    addon: "", 
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -22,6 +25,7 @@ const ItemEdit = () => {
     if (!formData.price) tempErrors.price = "Price is required.";
     else if (formData.price <= 0) tempErrors.price = "Price must be greater than zero.";
     if (!formData.image) tempErrors.image = "Image is required.";
+    if (!formData.addon) tempErrors.addon = "Please select an addon type.";
     return tempErrors;
   };
 
@@ -42,6 +46,7 @@ const ItemEdit = () => {
       newItem.append("name", formData.name);
       newItem.append("price", formData.price);
       newItem.append("image", formData.image);
+      newItem.append("addon", formData.addon); 
   
       try {
         const response = await axios.post("http://localhost:5000/api/v1/products/createProduct", newItem, {
@@ -130,11 +135,33 @@ const ItemEdit = () => {
             {errors.image && <p className="text-xs text-red-500 mt-1">{errors.image}</p>}
           </div>
 
+          
+          <div>
+            <label htmlFor="addon" className="block text-sm font-medium text-gray-700">
+              Add-on Type
+            </label>
+            <select
+              id="addon"
+              name="addon"
+              value={formData.addon}
+              onChange={handleChange}
+              className={`mt-1 block w-full px-4 py-2 border ${
+                errors.addon ? "border-red-500" : "border-gray-300"
+              } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500`}
+            >
+              <option value="">Select Add-on</option>
+              <option value="veg">Veg</option>
+              <option value="non-veg">Non-Veg</option>
+              <option value="pizza">Pizza</option>
+            </select>
+            {errors.addon && <p className="text-xs text-red-500 mt-1">{errors.addon}</p>}
+          </div>
+
           <button
             type="submit"
             className="bg-red-600 px-8 py-2 text-white mt-4 hover:bg-red-700 transform transition-transform duration-300 hover:scale-105 flex items-center justify-center space-x-2"
           >
-            <FaSave /> {/* Add the save icon here */}
+            <FaSave /> 
             <span>Save Item</span>
           </button>
         </form>
@@ -144,3 +171,4 @@ const ItemEdit = () => {
 };
 
 export default ItemEdit;
+

@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post("/login", loginAdmin);
 
+<<<<<<< HEAD
 module.exports = router;
 
 
@@ -28,3 +29,6 @@ module.exports = router;
 
 // module.exports = router;
 
+=======
+module.exports = router;
+>>>>>>> 37e3a8e109ec665c3abc5ea0f5ade938cd897b5e
